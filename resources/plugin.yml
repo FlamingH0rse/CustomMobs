@@ -1,0 +1,9 @@
+name: CustomMobs
+version: 1.0
+main: me.flaming.plugintemplate
+api-version: 1.19
+authors: [FlamingH0rse]
+commands:
+  pluginhelp:
+    description: help command
+    usage: /pluginhelp

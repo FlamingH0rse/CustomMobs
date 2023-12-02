@@ -1,0 +1,22 @@
+custom_items:
+  zombie_shard:
+    display_name:
+    material:
+    enchants:
+      - - SHARPNESS
+  pro_sword:
+    display_name:
+    material:
+    enchants:
+      - SHARPNESS,5
+      - UNBREAKING,3
+
+custom_mobs:
+  zombie:
+    display_name: '&6&lGiga &r&bZombie'
+    equipment:
+      hand: pro_sword
+      head: pro_sword
+      chest: pro_sword
+      legs: pro_sword
+      feet: pro_sword
