@@ -7,9 +7,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 
+import static me.flaming.EntitySpawnLogic.StartSpawnLogic;
+
 public class CustomMobsCore extends JavaPlugin {
     private static CustomMobsCore plugin;
-    private File dataConfigFile; // come config.yml PLS? k afk k k kk k k k kk k k k sorry ok now im acc back
+    private File dataConfigFile;
     private FileConfiguration dataConfig;
 
     @Override
@@ -17,6 +19,7 @@ public class CustomMobsCore extends JavaPlugin {
         plugin = this;
         saveDefaultConfig();
         createDataConfig();
+        StartSpawnLogic();
 
         getLogger().info("CustomMobs is Enabled");
     }
