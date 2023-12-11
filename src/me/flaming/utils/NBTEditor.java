@@ -7,7 +7,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-
 public class NBTEditor {
     public CustomMobsCore main = CustomMobsCore.getPlugin();
     public void setData (ItemStack item, String key, Object value) {

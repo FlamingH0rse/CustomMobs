@@ -1,68 +1,58 @@
 package me.flaming.commands;
 
-import me.flaming.CustomEntity;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.*;
-
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import static me.flaming.EntitySpawnLogic.GetWorlds;
 import static me.flaming.EntitySpawnLogic.SpawnMob;
 import static me.flaming.utils.utils.arrayOrDefaultValue;
 import static me.flaming.utils.utils.colorStr;
 
 public class PluginCommands implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player p = (Player) sender;
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         String currentArg = arrayOrDefaultValue(args, 0, "");
 
         if (currentArg.equalsIgnoreCase("help")) {
-            helpCommand(p);
+            helpCommand(sender);
         } else if (currentArg.equalsIgnoreCase("spawnmob")) {
+
             // Mob Spawn Logic here
             // Basically this will call spawnmob inside entityspawnlogic
 
-            if (!(sender instanceof Player)) {
-                p.sendMessage(colorStr("This command is not available in console"));
+            if (sender instanceof ConsoleCommandSender) {
+                sender.sendMessage(colorStr("This command is not available in console"));
                 return true;
             }
-
-            Zombie theEntity = GetWorlds().get("world").spawn(p.getLocation(), Zombie.class);
-
-            theEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2000);
-            theEntity.setHealth(2000);
-            theEntity.setCustomName(colorStr("&6Bob"));
-
-            p.sendMessage(colorStr("&aSuccessfully spawned the mob!"));
+            Player p = (Player) sender;
+            // Run the stuff then get the message whether it be a success message or an error one
+            String message = SpawnMob(p.getLocation(), "idk");
+            p.sendMessage(message);
         } else {
             // this also catches about command so yea lol rawr xd
-            aboutMessage(p);
+            aboutMessage(sender);
         }
 
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> arguments = new ArrayList<>();
         return arguments;
     }
 
     // Long Commands Below
-    private void aboutMessage(Player p) {
+    private void aboutMessage(CommandSender p) {
         BaseComponent[] repoButton = new ComponentBuilder("[Click Here]\n").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
                 .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/FlamingH0rse/OptimisedHoppers"))
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Visit the repo"))).create();
@@ -86,7 +76,7 @@ public class PluginCommands implements TabExecutor {
         p.spigot().sendMessage(messageComponent);
     }
 
-    private void helpCommand(Player p) {
+    private void helpCommand(CommandSender p) {
         BaseComponent[] helpMessage = new ComponentBuilder("\n")
                 .append("CustomMobs ").color(net.md_5.bungee.api.ChatColor.AQUA).bold(true)
                 .append("[Commands]\n\n").color(net.md_5.bungee.api.ChatColor.DARK_RED)
