@@ -4,6 +4,8 @@ main: me.flaming.CustomMobsCore
 api-version: 1.20
 authors: [FlamingH0rse,Chronny]
 commands:
-  pluginhelp:
-    description: help command
-    usage: /pluginhelp
+  custommobs:
+    description: The Command for Custom Mobs (Requires custommobs.admin Permission)
+    permission: custommobs.admin
+    permission-message: You do not have the permission to use this command.
+    #    usage: /custommobs

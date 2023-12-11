@@ -1,5 +1,6 @@
 package me.flaming;
 
+import me.flaming.commands.PluginCommands;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public class CustomMobsCore extends JavaPlugin {
         saveDefaultConfig();
         createDataConfig();
         StartSpawnLogic();
+        getCommand("custommobs").setExecutor(new PluginCommands());
 
         getLogger().info("CustomMobs is Enabled");
     }
