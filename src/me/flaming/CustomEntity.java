@@ -41,6 +41,10 @@ public class CustomEntity {
         private double damage;
         private double speed;
 
+        public static EntityBuilder newEntity() {
+            return new EntityBuilder();
+        }
+
         public EntityBuilder setDisplayName(String input) {
             this.displayName = input;
             return this;

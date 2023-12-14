@@ -22,16 +22,20 @@ settings:
 #      body:                         #   Chestplates
 #      legs:                         #   Leggings
 #      foot:                         #   Boots
-#                                    #
+#                                    #   NOTE: Some mobs do not support armor such as blaze
 #    properties:                     #   General mob properties
 #      drops:                        #
 #        -                           #
 #      spawns-in:                    #
 #        enabled: false              #
+#        interval:                   #   Spawn mob in each specified tick interval for instance 1000 a mob
+#        amount-range:               #   will spawn with the given range in tick in every 1000 tick
+#          min:                      #   the min num of mobs that will spawn
+#          max:                      #
 #        max: 50                     #
 #        location:                   #
-#          pos-1:                    #
-#            x:                      #
+#          pos-1:                    #   Set 2 position that the mobs will spawn in. Position works similarly just like
+#            x:                      #   in worldedit
 #            y:                      #
 #            z:                      #
 #          pos-2:                    #
@@ -65,6 +69,10 @@ mobs:
         -
       spawns-in:
         enabled: false
+        interval:
+        amount-range:
+          min: 2
+          max: 5
         max: 50
         location:
           pos-1:

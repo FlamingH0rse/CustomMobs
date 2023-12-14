@@ -13,7 +13,7 @@ import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import static me.flaming.EntitySpawnLogic.SpawnMob;
+import static me.flaming.EntityUtils.SpawnMob;
 import static me.flaming.utils.utils.arrayOrDefaultValue;
 import static me.flaming.utils.utils.colorStr;
 
