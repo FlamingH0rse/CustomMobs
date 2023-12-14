@@ -1,22 +1,77 @@
-custom_items:
-  zombie_shard:
-    display_name:
-    material:
-    enchants:
-      - - SHARPNESS
-  pro_sword:
-    display_name:
-    material:
-    enchants:
-      - SHARPNESS,5
-      - UNBREAKING,3
+# CustomMobs Configuration file
+# For more information regarding yml check https://learnxinyminutes.com/docs/yaml/
+# General Plugin Settings will be here
+settings:
+  enable-natural-spawning: false
 
-custom_mobs:
-  zombie:
-    display_name: '&6&lGiga &r&bZombie'
-    equipment:
-      hand: pro_sword
-      head: pro_sword
-      chest: pro_sword
-      legs: pro_sword
-      feet: pro_sword
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# This is where you will place mobs. Here is an example of a mob in it:
+#
+#  my-super-mob:                     #   This can be in any name. This is the internal name of the mob and it is required
+#    display_name: "SuperMob"        #   This is the name displayed to others (like nametag) it also supports color codes
+#    type: "Zombie"                  #   The type of the mob (E.g Zombie, Spider etc) For more info regarding supported mobs check the github page
+#    stats:                          #   The mobs stats (Specify null for default value)
+#      health: 20                    #
+#      damage: null                  #
+#      speed: null                   #
+#                                    #
+#    inventory:                      #   Inventory of the mob this is where you can specify what the mob wears for example:
+#      main-hand:                    #   Sword Here
+#      left-hand:                    #   shield or sword
+#      head:                         #   Helmets
+#      body:                         #   Chestplates
+#      legs:                         #   Leggings
+#      foot:                         #   Boots
+#                                    #
+#    properties:                     #   General mob properties
+#      drops:                        #
+#        -                           #
+#      spawns-in:                    #
+#        enabled: false              #
+#        max: 50                     #
+#        location:                   #
+#          pos-1:                    #
+#            x:                      #
+#            y:                      #
+#            z:                      #
+#          pos-2:                    #
+#            x:                      #
+#            y:                      #
+#            z:                      #
+#
+# NOTE: mobs should be placed inside the mobs key
+# For more information regarding yml check https://learnxinyminutes.com/docs/yaml/
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+mobs:
+  sample-mob:
+    display_name: ""
+    type: "Zombie"
+    stats:
+      health: 20
+      damage: null
+      speed: null
+
+    inventory:
+      main-hand:
+      left-hand:
+      head:
+      body:
+      legs:
+      foot:
+
+    properties:
+      drops:
+        -
+      spawns-in:
+        enabled: false
+        max: 50
+        location:
+          pos-1:
+            x:
+            y:
+            z:
+          pos-2:
+            x:
+            y:
+            z:
