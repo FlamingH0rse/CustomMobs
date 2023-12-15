@@ -32,7 +32,7 @@ public class EntityInventory {
     public CustomMobItem getLegs() {
         return this.legs;
     }
-    public CustomMobItem getBoots() {
+    public CustomMobItem getFoot() {
         return this.foot;
     }
 
