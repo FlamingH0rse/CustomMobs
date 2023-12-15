@@ -1,5 +1,6 @@
 package me.flaming;
 
+import me.flaming.classes.CustomEntity;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;

@@ -5,11 +5,14 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +25,18 @@ public class PluginCommands implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         String currentArg = arrayOrDefaultValue(args, 0, "");
 
-        if (currentArg.equalsIgnoreCase("help")) {
-            helpCommand(sender);
-        } else if (currentArg.equalsIgnoreCase("spawnmob")) {
-
-            // Mob Spawn Logic here
-            // Basically this will call spawnmob inside entityspawnlogic
-
-            if (sender instanceof ConsoleCommandSender) {
-                sender.sendMessage(colorStr("This command is not available in console"));
-                return true;
-            }
-            Player p = (Player) sender;
-            // Run the stuff then get the message whether it be a success message or an error one
-            String message = SpawnMob(p.getLocation(), "idk");
-            p.sendMessage(message);
-        } else {
-            // this also catches about command so yea lol rawr xd
-            aboutMessage(sender);
+        switch (currentArg.toLowerCase()) {
+            case "help":
+                helpCommand(sender);
+                break;
+            case "spawnmob":
+                spawnMobCommand(sender, args);
+                break;
+            case "getiteminfo":
+                getItemInfoCommand(sender);
+                break;
+            default:
+                aboutMessageCommand(sender);
         }
 
         return true;
@@ -51,10 +48,54 @@ public class PluginCommands implements TabExecutor {
         return arguments;
     }
 
-    // Long Commands Below
-    private void aboutMessage(CommandSender p) {
+    // Commands are stored Below
+    private void spawnMobCommand(CommandSender sender, String[] args) {
+        // Mob Spawn Logic here
+        // Basically this will call spawnmob inside entityspawnlogic
+
+        if (sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(colorStr("This command is not available in console"));
+            return;
+        }
+        Player p = (Player) sender;
+        // Run the stuff then get the message whether it be a success message or an error one
+        String mobInternalName = arrayOrDefaultValue(args, 1, "");
+        String message = SpawnMob(p.getLocation(), mobInternalName);
+        p.sendMessage(message);
+    }
+
+    private void getItemInfoCommand(CommandSender sender) {
+        if (sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(colorStr("This command is not available in console"));
+            return;
+        }
+        Player p = (Player) sender;
+
+        ItemStack item = p.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = item.getItemMeta();
+        Material material = item.getType();
+
+        if (itemMeta == null) {
+            p.sendMessage(colorStr("&cInvalid Item/You are currently not holding any items"));
+            return;
+        }
+
+        BaseComponent[] metaCopyButton = new ComponentBuilder("[Copy to clipboard]").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
+                .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, itemMeta.getAsString()))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Copy the meta to your Clipboard"))).create();
+
+        BaseComponent[] itemCopyButton = new ComponentBuilder("[Copy to clipboard]").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
+                .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, material.toString()))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Copy the meta to your Clipboard"))).create();
+
+        BaseComponent[] messageComponent = new ComponentBuilder().append(metaCopyButton).append(itemCopyButton).create();
+
+        p.spigot().sendMessage(messageComponent);
+    }
+
+    private void aboutMessageCommand(CommandSender p) {
         BaseComponent[] repoButton = new ComponentBuilder("[Click Here]\n").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
-                .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/FlamingH0rse/OptimisedHoppers"))
+                .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/FlamingH0rse/CustomMobs"))
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Visit the repo"))).create();
 
         BaseComponent[] helpButton = new ComponentBuilder("[Click Here]\n").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)

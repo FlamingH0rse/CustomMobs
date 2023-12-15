@@ -1,4 +1,4 @@
-package me.flaming;
+package me.flaming.classes;
 
 import org.bukkit.entity.EntityType;
 
@@ -8,6 +8,7 @@ public class CustomEntity {
     private final double health;
     private final double damage;
     private final double speed;
+    private final EntityInventory entityInventory;
 
     private CustomEntity(EntityBuilder build) {
         this.displayName = build.displayName;
@@ -15,6 +16,7 @@ public class CustomEntity {
         this.health = build.health;
         this.damage = build.damage;
         this.speed = build.speed;
+        this.entityInventory = build.entityInventory;
     }
 
     // Getters
@@ -33,6 +35,9 @@ public class CustomEntity {
     public double getSpeed() {
         return this.speed;
     }
+    public EntityInventory getInv() {
+        return this.entityInventory;
+    }
 
     public static class EntityBuilder {
         private String displayName;
@@ -40,6 +45,7 @@ public class CustomEntity {
         private double health;
         private double damage;
         private double speed;
+        private EntityInventory entityInventory;
 
         public static EntityBuilder newEntity() {
             return new EntityBuilder();
@@ -67,6 +73,11 @@ public class CustomEntity {
 
         public EntityBuilder setSpeed(double input) {
             this.speed = input;
+            return this;
+        }
+
+        public EntityBuilder setInventory(EntityInventory input) {
+            this.entityInventory = input;
             return this;
         }
 
