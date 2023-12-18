@@ -12,6 +12,11 @@ public class CustomMobItem {
     }
 
     public CustomMobItem(Map<String, Object> input) {
+        if (input == null || input.isEmpty()) {
+            this.item = null;
+            return;
+        }
+
         Map.Entry<String, Object> entry = input.entrySet().iterator().next();
 
         Material material = Material.getMaterial(entry.getKey().toUpperCase());

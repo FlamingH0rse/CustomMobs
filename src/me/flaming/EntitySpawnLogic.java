@@ -8,12 +8,13 @@ import me.flaming.classes.CustomMobItem;
 import me.flaming.classes.EntityInventory;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
-
 import java.util.HashMap;
 
 public class EntitySpawnLogic {
@@ -59,6 +60,7 @@ public class EntitySpawnLogic {
             }
 
             Location location = new Location(randomWorld, 0, 0, 0);
+            // It seems like paper has an issue here (This will work in paper 1.20.4)
             LivingEntity entityInstance = (LivingEntity) randomWorld.createEntity(location, mobType.getEntityClass());
 
             // Entity is not a mob
@@ -67,29 +69,38 @@ public class EntitySpawnLogic {
                 continue;
             }
 
-//            Class<LivingEntity> livingEntityClass = (Class<LivingEntity>) mobType.getEntityClass();
+            AttributeInstance defHealth = entityInstance.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            AttributeInstance defDmg = entityInstance.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+            AttributeInstance defSpeed = entityInstance.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
 
-            double mobHealth = cfg.getDouble(configPath + ".stats.health");
-            double mobDamage = cfg.getDouble(configPath + ".stats.health");
-            double mobSpeed = cfg.getDouble(configPath + ".stats.health");
+            double mobHealth = cfg.getDouble(configPath + ".stats.health", defHealth.getBaseValue());
+            double mobDamage = cfg.getDouble(configPath + ".stats.damage", defDmg.getBaseValue());
+            double mobSpeed = cfg.getDouble(configPath + ".stats.speed", defSpeed.getBaseValue());
 
-            ConfigurationSection inventorySection = cfg.getConfigurationSection(configPath + "inventory");
+            ConfigurationSection inventorySection = cfg.getConfigurationSection(configPath + ".inventory");
             EntityInventory entityInv = null;
 
             if (inventorySection != null) {
+                ConfigurationSection main_hand = inventorySection.getConfigurationSection("main-hand");
+                ConfigurationSection left_hand = inventorySection.getConfigurationSection("left-hand");
+                ConfigurationSection head = inventorySection.getConfigurationSection("head");
+                ConfigurationSection body = inventorySection.getConfigurationSection("body");
+                ConfigurationSection legs = inventorySection.getConfigurationSection("legs");
+                ConfigurationSection foot = inventorySection.getConfigurationSection("foot");
+
                 entityInv = EntityInventory.InventoryBuilder.newInventory()
-                        .setMainHand(new CustomMobItem(inventorySection.getConfigurationSection("main-hand").getValues(false)))
-                        .setLeftHand(new CustomMobItem(inventorySection.getConfigurationSection("left-hand").getValues(false)))
-                        .setHead(new CustomMobItem(inventorySection.getConfigurationSection("head").getValues(false)))
-                        .setBody(new CustomMobItem(inventorySection.getConfigurationSection("body").getValues(false)))
-                        .setLegs(new CustomMobItem(inventorySection.getConfigurationSection("legs").getValues(false)))
-                        .setFoot(new CustomMobItem(inventorySection.getConfigurationSection("foot").getValues(false)))
+                        .setMainHand(new CustomMobItem((main_hand != null) ? main_hand.getValues(false) : null))
+                        .setLeftHand(new CustomMobItem((left_hand != null) ? left_hand.getValues(false) : null))
+                        .setHead(new CustomMobItem((head != null) ? head.getValues(false) : null))
+                        .setBody(new CustomMobItem((body != null) ? body.getValues(false) : null))
+                        .setLegs(new CustomMobItem((legs != null) ? legs.getValues(false) : null))
+                        .setFoot(new CustomMobItem((foot != null) ? foot.getValues(false) : null))
                         .build();
             }
 
             CustomEntity mobClass = CustomEntity.EntityBuilder
                     .newEntity()
-                    .setDisplayName(cfg.getString(configPath + ".displayName"))
+                    .setDisplayName(cfg.getString(configPath + ".display_name"))
                     .setEntityType(mobType)
                     .setHealth(mobHealth)
                     .setDamage(mobDamage)
