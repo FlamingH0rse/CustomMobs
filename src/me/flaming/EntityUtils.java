@@ -12,7 +12,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-
 import static me.flaming.CustomMobsCore.getPlugin;
 import static me.flaming.utils.utils.colorStr;
 
@@ -119,4 +118,9 @@ public class EntityUtils {
 
         return colorStr("&aSuccessfully spawned the mob!");
     }
+
+    public static void customMobDrop() {
+
+    }
+
 }

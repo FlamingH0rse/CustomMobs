@@ -1,6 +1,7 @@
 package me.flaming;
 
 import me.flaming.commands.PluginCommands;
+import me.flaming.events.EntityDeathListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public class CustomMobsCore extends JavaPlugin {
         createDataConfig();
         StartSpawnLogic();
         getCommand("custommobs").setExecutor(new PluginCommands());
+        getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);
 
         getLogger().info("CustomMobs is Enabled");
     }
