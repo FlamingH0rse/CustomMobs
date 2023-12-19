@@ -70,7 +70,10 @@ mobs:
         LEATHER_BOOTS: "{display:{color:3949738}}"
 
     properties:
-      drops: null
+      drops:
+        ANVIL:
+          meta: "{}"
+          chance: 1
       spawns-in:
         enabled: false
         interval:

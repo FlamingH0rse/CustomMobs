@@ -7,6 +7,7 @@ import me.flaming.classes.CustomEntity;
 import me.flaming.classes.CustomMobItem;
 import me.flaming.classes.EntityInventory;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -98,6 +99,23 @@ public class EntitySpawnLogic {
                         .build();
             }
 
+            ConfigurationSection dropsSection = cfg.getConfigurationSection(configPath + ".properties.drops");
+            HashMap<CustomMobItem , Double> mobdrops = new HashMap<>();
+            if (dropsSection != null) {
+                for (String itemName : dropsSection.getKeys(false)) {
+                    ConfigurationSection drop = dropsSection.getConfigurationSection(itemName);
+                    Material material = Material.getMaterial(itemName);
+                    if (drop == null || material == null) {
+                        continue;
+                    }
+
+                    String metaString = drop.getString("meta");
+                    double chance = drop.getDouble("chance", 1.0);
+                    CustomMobItem item = new CustomMobItem(material, metaString);
+                    mobdrops.put(item, chance);
+                }
+            }
+
             CustomEntity mobClass = CustomEntity.EntityBuilder
                     .newEntity()
                     .setDisplayName(cfg.getString(configPath + ".display_name"))
@@ -106,6 +124,7 @@ public class EntitySpawnLogic {
                     .setDamage(mobDamage)
                     .setSpeed(mobSpeed)
                     .setInventory(entityInv)
+                    .setMobDrops(mobdrops)
                     .build();
 
             GetMobs().put(mob, mobClass);

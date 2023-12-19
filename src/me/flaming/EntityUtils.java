@@ -118,9 +118,4 @@ public class EntityUtils {
 
         return colorStr("&aSuccessfully spawned the mob!");
     }
-
-    public static void customMobDrop() {
-
-    }
-
 }

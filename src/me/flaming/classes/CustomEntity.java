@@ -1,6 +1,7 @@
 package me.flaming.classes;
 
 import org.bukkit.entity.EntityType;
+import java.util.HashMap;
 
 public class CustomEntity {
     private final String displayName;
@@ -9,6 +10,7 @@ public class CustomEntity {
     private final double damage;
     private final double speed;
     private final EntityInventory entityInventory;
+    private final HashMap<CustomMobItem , Double> mobDrops;
 
     private CustomEntity(EntityBuilder build) {
         this.displayName = build.displayName;
@@ -17,6 +19,7 @@ public class CustomEntity {
         this.damage = build.damage;
         this.speed = build.speed;
         this.entityInventory = build.entityInventory;
+        this.mobDrops = build.mobDrops;
     }
 
     // Getters
@@ -38,6 +41,9 @@ public class CustomEntity {
     public EntityInventory getInv() {
         return this.entityInventory;
     }
+    public HashMap<CustomMobItem , Double> getMobDrops() {
+        return this.mobDrops;
+    }
 
     public static class EntityBuilder {
         private String displayName;
@@ -46,6 +52,7 @@ public class CustomEntity {
         private double damage;
         private double speed;
         private EntityInventory entityInventory;
+        private HashMap<CustomMobItem , Double> mobDrops;
 
         public static EntityBuilder newEntity() {
             return new EntityBuilder();
@@ -78,6 +85,11 @@ public class CustomEntity {
 
         public EntityBuilder setInventory(EntityInventory input) {
             this.entityInventory = input;
+            return this;
+        }
+
+        public EntityBuilder setMobDrops(HashMap<CustomMobItem , Double> input) {
+            this.mobDrops = input;
             return this;
         }
 
