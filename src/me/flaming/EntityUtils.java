@@ -18,7 +18,7 @@ import static me.flaming.utils.utils.colorStr;
 public class EntityUtils {
     // You can also ignore the value this returns which is fine
     public static String SpawnMob(@NotNull Location location, @NotNull String mobInternalName) {
-        CustomEntity mob = EntitySpawnLogic.GetMobs().get(mobInternalName);
+        CustomEntity mob = EntityLoader.GetMobs().get(mobInternalName);
 
         if (mob == null) {
             return colorStr("&cThe specified mob does not exist in the current context");

@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
-import static me.flaming.EntitySpawnLogic.StartSpawnLogic;
+import static me.flaming.EntityLoader.StartSpawnLogic;
 
 public class CustomMobsCore extends JavaPlugin {
     private static CustomMobsCore plugin;

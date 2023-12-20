@@ -18,7 +18,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import java.util.HashMap;
 
-public class EntitySpawnLogic {
+public class EntityLoader {
     private static final HashMap<String, World> Worlds = new HashMap<>();
     private static final HashMap<String, CustomEntity> LoadedMobs = new HashMap<>();
     private static final FileConfiguration pluginConfig = getPlugin().getConfig();
@@ -39,7 +39,9 @@ public class EntitySpawnLogic {
     public static HashMap<String, CustomEntity> GetMobs() {
         return LoadedMobs;
     }
-    public static FileConfiguration GetPluginConfig() { return pluginConfig; }
+    public static FileConfiguration GetPluginConfig() {
+        return pluginConfig;
+    }
 
     private static void LoadMobs() {
         // Loading mobs from yml logic
@@ -130,9 +132,5 @@ public class EntitySpawnLogic {
             GetMobs().put(mob, mobClass);
             getPlugin().getLogger().info("Successfully loaded mob: " + mob);
         }
-    }
-
-    private static boolean Verifier() {
-        return false;
     }
 }
