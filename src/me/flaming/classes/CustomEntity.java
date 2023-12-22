@@ -11,6 +11,7 @@ public class CustomEntity {
     private final double speed;
     private final EntityInventory entityInventory;
     private final HashMap<CustomMobItem , Double> mobDrops;
+    private final SpawnLocation spawnLocation;
 
     private CustomEntity(EntityBuilder build) {
         this.displayName = build.displayName;
@@ -20,6 +21,7 @@ public class CustomEntity {
         this.speed = build.speed;
         this.entityInventory = build.entityInventory;
         this.mobDrops = build.mobDrops;
+        this.spawnLocation = build.spawnLocation;
     }
 
     // Getters
@@ -44,6 +46,9 @@ public class CustomEntity {
     public HashMap<CustomMobItem , Double> getMobDrops() {
         return this.mobDrops;
     }
+    public SpawnLocation getSpawnLocation() {
+        return this.spawnLocation;
+    }
 
     public static class EntityBuilder {
         private String displayName;
@@ -53,6 +58,7 @@ public class CustomEntity {
         private double speed;
         private EntityInventory entityInventory;
         private HashMap<CustomMobItem , Double> mobDrops;
+        private SpawnLocation spawnLocation;
 
         public static EntityBuilder newEntity() {
             return new EntityBuilder();
@@ -90,6 +96,11 @@ public class CustomEntity {
 
         public EntityBuilder setMobDrops(HashMap<CustomMobItem , Double> input) {
             this.mobDrops = input;
+            return this;
+        }
+
+        public EntityBuilder setSpawnLocation(SpawnLocation input) {
+            this.spawnLocation = input;
             return this;
         }
 

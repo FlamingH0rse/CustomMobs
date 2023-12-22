@@ -74,13 +74,15 @@ mobs:
         ANVIL:
           meta: "{}"
           chance: 1
-      spawns-in:
+      spawn:
         enabled: false
-        interval:
-        amount-range:
+        tick-interval:
+          min:
+          max:
+        spawn-amount-range:
           min: 2
           max: 5
-        max: 50
+        max-mob: 50
         location:
           pos-1:
             x:
