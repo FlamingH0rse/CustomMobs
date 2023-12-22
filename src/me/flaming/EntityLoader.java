@@ -29,25 +29,25 @@ public class EntityLoader {
             getLoadedWorlds().put(w.getName(), w);
         }
 
-        LoadMobs();
+        loadMobs();
     }
 
     public static HashMap<String, World> getLoadedWorlds() {
         return Worlds;
     }
-    public static HashMap<String, CustomEntity> GetMobs() {
+    public static HashMap<String, CustomEntity> getLoadedMobs() {
         return LoadedMobs;
     }
-    public static FileConfiguration GetPluginConfig() {
+    public static FileConfiguration getPluginConfig() {
         return pluginConfig;
     }
 
-    private static void LoadMobs() {
+    private static void loadMobs() {
         // Loading mobs from yml logic
         // This is where CustomEntity will be made. Default values will also be provided in here in case
         // the user has not specified any values in their respective yml
         World randomWorld = getRandomValue(getLoadedWorlds());
-        FileConfiguration cfg = GetPluginConfig();
+        FileConfiguration cfg = getPluginConfig();
         getPlugin().getLogger().info("Started mob loading");
 
         for (String mob : cfg.getConfigurationSection("mobs").getKeys(false)) {
@@ -104,7 +104,7 @@ public class EntityLoader {
                     .setSpawnLocation(spawnLocation)
                     .build();
 
-            GetMobs().put(mob, mobClass);
+            getLoadedMobs().put(mob, mobClass);
             getPlugin().getLogger().info("Successfully loaded mob: " + mob);
         }
     }

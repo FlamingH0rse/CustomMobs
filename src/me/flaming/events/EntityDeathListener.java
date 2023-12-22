@@ -15,7 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Map;
 import java.util.Objects;
 import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.EntityLoader.GetMobs;
+import static me.flaming.EntityLoader.getLoadedMobs;
 
 public class EntityDeathListener implements Listener {
     NamespacedKey key = new NamespacedKey(getPlugin(), "JDnD-weDJ-KDe-DSaw");
@@ -25,7 +25,7 @@ public class EntityDeathListener implements Listener {
         Entity entity = e.getEntity();
         String mobName = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
 
-        for (Map.Entry<String, CustomEntity> mob : GetMobs().entrySet()) {
+        for (Map.Entry<String, CustomEntity> mob : getLoadedMobs().entrySet()) {
             if (Objects.equals(mobName, mob.getKey())) {
                 e.getDrops().clear();
                 e.setDroppedExp(0);

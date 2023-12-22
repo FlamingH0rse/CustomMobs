@@ -1,5 +1,6 @@
 package me.flaming;
 
+import me.flaming.classes.CustomEntity;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -8,7 +9,7 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import java.util.Random;
 
-public class EntitySpawner {
+public class EntitySpawnerUtils {
     public boolean isSafeLocation(Location location, Entity entity) {
         World world = location.getWorld();
 
@@ -45,6 +46,10 @@ public class EntitySpawner {
             }
         }
         return true;
+    }
+
+    public void withPotentialSurface(Location randomLocation, CustomEntity currentMob) {
+
     }
 
     public Vector getRandomLocation(Vector pos1, Vector pos2) {
