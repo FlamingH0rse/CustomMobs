@@ -3,7 +3,6 @@ package me.flaming;
 import static me.flaming.CustomMobsCore.getPlugin;
 import static me.flaming.utils.utils.getRandomValue;
 import static org.bukkit.Bukkit.getWorlds;
-
 import me.flaming.classes.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,6 +109,14 @@ public class EntityLoader {
         }
     }
 
+    private static void verifyIntegrity() {
+
+    }
+
+    private static void setMobsStats() {
+
+    }
+
     private static EntityInventory loadMobInventory(@Nullable ConfigurationSection inventorySection) {
         EntityInventory entityInv = null;
 
@@ -169,9 +176,16 @@ public class EntityLoader {
             Vector pos2 = new Vector();
 
             if (spawnLocationSection != null) {
-                pos1.setX(spawnLocationSection.getDouble(""));
-                pos1.setY(spawnLocationSection.getDouble(""));
-                pos1.setZ(spawnLocationSection.getDouble(""));
+                pos1.setX(spawnLocationSection.getDouble("pos1.x"));
+                pos1.setY(spawnLocationSection.getDouble("pos1.y"));
+                pos1.setZ(spawnLocationSection.getDouble("pos1.z"));
+                // Probably not needed ig
+                /*if (pos1.getX() == 0 && pos1.getY() == 0 && pos1.getZ() == 0) {
+
+                }*/
+                pos2.setX(spawnLocationSection.getDouble("pos2.x"));
+                pos2.setY(spawnLocationSection.getDouble("pos2.y"));
+                pos2.setZ(spawnLocationSection.getDouble("pos2.z"));
             } else {
                 enabled = false;
                 getPlugin().getLogger().warning("No spawn location supplied. Setting enabled to false");
@@ -179,7 +193,6 @@ public class EntityLoader {
 
             SpawnProperty spawnProperty = new SpawnProperty(minInterval, maxInterval, minAmount, maxAmount, maxMob, enabled);
             spawnLocation = new SpawnLocation(pos1, pos2, spawnProperty);
-
         }
 
         return spawnLocation;
