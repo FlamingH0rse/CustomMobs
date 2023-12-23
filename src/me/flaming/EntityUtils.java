@@ -7,17 +7,22 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import static me.flaming.CustomMobsCore.getPlugin;
+import static me.flaming.EntityLoader.getLoadedWorlds;
 import static me.flaming.utils.utils.colorStr;
+import static me.flaming.utils.utils.getRandomValue;
 
 public class EntityUtils {
     // You can also ignore the value this returns which is fine
-    public static String SpawnMob(@NotNull Location location, @NotNull String mobInternalName) {
+    @NotNull
+    public String spawnMob(@NotNull Location location, @NotNull String mobInternalName) {
         CustomEntity mob = EntityLoader.getLoadedMobs().get(mobInternalName);
 
         if (mob == null) {
@@ -43,9 +48,7 @@ public class EntityUtils {
         living.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(mob.getDamage());
         living.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(mob.getSpeed());
 
-        getPlugin().getLogger().info("im here");
         if (mob.getInv() != null) {
-            getPlugin().getLogger().info("Mob has Inv setting it now!");
             // lol
             UnsafeValues unsafe = Bukkit.getUnsafe();
             EntityInventory mobInv = mob.getInv();
@@ -117,5 +120,32 @@ public class EntityUtils {
         }
 
         return colorStr("&aSuccessfully spawned the mob!");
+    }
+
+    private void setEntityProperties() {
+
+    }
+
+    // This will also return null if the entity provided is not a valid mob
+    @Nullable
+    public Entity getEntityReference(EntityType mobType) {
+        World randomWorld = getRandomValue(getLoadedWorlds());
+        Location location = new Location(randomWorld, 0, 0, 0);
+        Entity entity = null;
+
+        if (randomWorld != null && mobType.getEntityClass() != null) {
+            try {
+                entity = randomWorld.createEntity(location, mobType.getEntityClass());
+            } catch (Exception ignored) {
+                // Server version does not support createEntity (Possibly due to paper 1.20.2 not supporting it)
+                // or a lower version than <1.20.2 has been used
+                // A debug message may be added here later on to inform the server owner
+                // that a workaround has been used instead
+                entity = randomWorld.spawnEntity(location, mobType, false);
+                entity.remove();
+            }
+        }
+
+        return entity;
     }
 }

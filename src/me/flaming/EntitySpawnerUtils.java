@@ -1,13 +1,17 @@
 package me.flaming;
 
 import me.flaming.classes.CustomEntity;
+import me.flaming.classes.SpawnLocation;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Random;
+import static me.flaming.EntityLoader.getLoadedWorlds;
 
 public class EntitySpawnerUtils {
     public boolean isSafeLocation(Location location, Entity entity) {
@@ -48,16 +52,68 @@ public class EntitySpawnerUtils {
         return true;
     }
 
-    public void withPotentialSurface(Location randomLocation, CustomEntity currentMob) {
+    @Nullable
+    public Location getPotentialSurface(Vector randomVector, CustomEntity currentMob) {
+        SpawnLocation mobLocationProperty = currentMob.getSpawnLocation();
+        int height = (int) Math.round(Math.abs(mobLocationProperty.getPos1().getY() - mobLocationProperty.getPos2().getY()));
 
+        for (int i = 0; i < height; i++) {
+            Location surface = tryAndGetSurface(randomVector, mobLocationProperty.getWorldName(), i, false);
+            if (surface != null) {
+                return surface;
+            }
+        }
+
+        for (int i = 0; i < height; i++) {
+            Location surface = tryAndGetSurface(randomVector, mobLocationProperty.getWorldName(), i, true);
+            if (surface != null) {
+                return surface;
+            }
+        }
+
+        return null;
     }
 
-    public Vector getRandomLocation(Vector pos1, Vector pos2) {
+    public Vector getRandomVector(Vector pos1, Vector pos2) {
         double x = randomizer(pos1.getX(), pos2.getX());
         double y = randomizer(pos1.getY(), pos2.getY());
         double z = randomizer(pos1.getZ(), pos2.getZ());
 
         return new Vector(x, y, z);
+    }
+
+    @NotNull
+    public Vector getHigherValueVector(@NotNull Vector pos1, @NotNull Vector pos2) {
+        double x = Math.max(pos1.getX(), pos2.getX());
+        double y = Math.max(pos1.getY(), pos2.getY());
+        double z = Math.max(pos1.getZ(), pos2.getZ());
+
+        return new Vector(x, y, z);
+    }
+
+    @NotNull
+    public Vector getLowerValueVector(@NotNull Vector pos1, @NotNull Vector pos2) {
+        double x = Math.min(pos1.getX(), pos2.getX());
+        double y = Math.min(pos1.getY(), pos2.getY());
+        double z = Math.min(pos1.getZ(), pos2.getZ());
+
+        return new Vector(x, y, z);
+    }
+
+    @Nullable
+    private Location tryAndGetSurface(Vector randomVector, String worldName, int num, boolean reverse) {
+        double y = (reverse) ? randomVector.getY() - num : randomVector.getY() + num;
+        World world = getLoadedWorlds().get(worldName);
+
+        Location location = new Location(world, randomVector.getX(), y, randomVector.getY());
+        // Ok I might get errors here due to references
+        Block block = location.clone().subtract(0, 1, 0).getBlock();
+
+        if (location.getBlock().getType().isAir() && block.getType().isSolid()) {
+            return location;
+        }
+
+        return null;
     }
 
     private double randomizer(double pos1Component, double pos2Component) {

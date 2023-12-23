@@ -4,7 +4,6 @@ import static me.flaming.CustomMobsCore.getPlugin;
 import static me.flaming.utils.utils.getRandomValue;
 import static org.bukkit.Bukkit.getWorlds;
 import me.flaming.classes.*;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -46,6 +45,7 @@ public class EntityLoader {
         // Loading mobs from yml logic
         // This is where CustomEntity will be made. Default values will also be provided in here in case
         // the user has not specified any values in their respective yml
+        EntityUtils entityUtils = new EntityUtils();
         World randomWorld = getRandomValue(getLoadedWorlds());
         FileConfiguration cfg = getPluginConfig();
         getPlugin().getLogger().info("Started mob loading");
@@ -61,9 +61,7 @@ public class EntityLoader {
                 continue;
             }
 
-            Location location = new Location(randomWorld, 0, 0, 0);
-            // It seems like paper has an issue here (This will work in paper 1.20.4)
-            LivingEntity entityInstance = (LivingEntity) randomWorld.createEntity(location, mobType.getEntityClass());
+            LivingEntity entityInstance = (LivingEntity) entityUtils.getEntityReference(mobType);
 
             // Entity is not a mob
             if (!(entityInstance instanceof Mob)) {
@@ -95,6 +93,7 @@ public class EntityLoader {
             CustomEntity mobClass = CustomEntity.EntityBuilder
                     .newEntity()
                     .setDisplayName(cfg.getString(configPath + ".display_name"))
+                    .setInternalName(mob)
                     .setEntityType(mobType)
                     .setHealth(mobHealth)
                     .setDamage(mobDamage)
@@ -174,8 +173,10 @@ public class EntityLoader {
             ConfigurationSection spawnLocationSection = spawnSection.getConfigurationSection("location");
             Vector pos1 = new Vector();
             Vector pos2 = new Vector();
+            String worldName = "";
 
-            if (spawnLocationSection != null) {
+            if (spawnLocationSection != null && getLoadedWorlds().containsKey(spawnLocationSection.getString("world-name"))) {
+                worldName = spawnLocationSection.getString("world-name");
                 pos1.setX(spawnLocationSection.getDouble("pos1.x"));
                 pos1.setY(spawnLocationSection.getDouble("pos1.y"));
                 pos1.setZ(spawnLocationSection.getDouble("pos1.z"));
@@ -192,7 +193,7 @@ public class EntityLoader {
             }
 
             SpawnProperty spawnProperty = new SpawnProperty(minInterval, maxInterval, minAmount, maxAmount, maxMob, enabled);
-            spawnLocation = new SpawnLocation(pos1, pos2, spawnProperty);
+            spawnLocation = new SpawnLocation(pos1, pos2, worldName, spawnProperty);
         }
 
         return spawnLocation;

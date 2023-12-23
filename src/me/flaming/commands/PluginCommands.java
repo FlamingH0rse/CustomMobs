@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import static me.flaming.EntityUtils.SpawnMob;
+import me.flaming.EntityUtils;
 import static me.flaming.utils.utils.arrayOrDefaultValue;
 import static me.flaming.utils.utils.colorStr;
 
@@ -57,10 +57,12 @@ public class PluginCommands implements TabExecutor {
             sender.sendMessage(colorStr("This command is not available in console"));
             return;
         }
+        EntityUtils entityUtils = new EntityUtils();
         Player p = (Player) sender;
+
         // Run the stuff then get the message whether it be a success message or an error one
         String mobInternalName = arrayOrDefaultValue(args, 1, "");
-        String message = SpawnMob(p.getLocation(), mobInternalName);
+        String message = entityUtils.spawnMob(p.getLocation(), mobInternalName);
         p.sendMessage(message);
     }
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class CustomEntity {
     private final String displayName;
+    private final String internalName;
     private final EntityType type;
     private final double health;
     private final double damage;
@@ -15,6 +16,7 @@ public class CustomEntity {
 
     private CustomEntity(EntityBuilder build) {
         this.displayName = build.displayName;
+        this.internalName = build.internalName;
         this.type = build.type;
         this.health = build.health;
         this.damage = build.damage;
@@ -27,6 +29,9 @@ public class CustomEntity {
     // Getters
     public String getDisplayName() {
         return this.displayName;
+    }
+    public String getInternalName() {
+        return this.internalName;
     }
     public EntityType getType() {
         return this.type;
@@ -52,6 +57,7 @@ public class CustomEntity {
 
     public static class EntityBuilder {
         private String displayName;
+        private String internalName;
         private EntityType type;
         private double health;
         private double damage;
@@ -66,6 +72,11 @@ public class CustomEntity {
 
         public EntityBuilder setDisplayName(String input) {
             this.displayName = input;
+            return this;
+        }
+
+        public EntityBuilder setInternalName(String input) {
+            this.internalName = input;
             return this;
         }
 

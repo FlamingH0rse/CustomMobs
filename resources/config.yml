@@ -76,6 +76,7 @@ mobs:
           chance: 1
       spawn:
         enabled: false
+        world: "world"
         tick-interval:
           min:
           max:
