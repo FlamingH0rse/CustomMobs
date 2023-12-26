@@ -1,7 +1,6 @@
 package me.flaming;
 
-import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.utils.utils.getRandomValue;
+import static me.flaming.CustomMobsCore.*;
 import static org.bukkit.Bukkit.getWorlds;
 import me.flaming.classes.*;
 import org.bukkit.Material;
@@ -18,43 +17,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 public class EntityLoader {
-    private static final HashMap<String, World> Worlds = new HashMap<>();
-    private static final HashMap<String, CustomEntity> LoadedMobs = new HashMap<>();
-    private static final FileConfiguration pluginConfig = getPlugin().getConfig();
-
     public static void startSpawnLogic() {
         for (World w : getWorlds()) {
             getPlugin().getLogger().info(w.getName());
             getLoadedWorlds().put(w.getName(), w);
         }
-
-        loadMobs();
+        EntityLoader entityLoader = new EntityLoader();
+        entityLoader.loadMobs();
         EntitySpawnerUtils entitySpawnerUtils = new EntitySpawnerUtils();
         entitySpawnerUtils.startSpawnerLogic();
     }
 
-    public static HashMap<String, World> getLoadedWorlds() {
-        return Worlds;
-    }
-    public static HashMap<String, CustomEntity> getLoadedMobs() {
-        return LoadedMobs;
-    }
-    public static FileConfiguration getPluginConfig() {
-        return pluginConfig;
-    }
-
-    private static void loadMobs() {
+    private void loadMobs() {
         // Loading mobs from yml logic
         // This is where CustomEntity will be made. Default values will also be provided in here in case
         // the user has not specified any values in their respective yml
         EntityUtils entityUtils = new EntityUtils();
-        World randomWorld = getRandomValue(getLoadedWorlds());
         FileConfiguration cfg = getPluginConfig();
         getPlugin().getLogger().info("Started mob loading");
 
         for (String mob : cfg.getConfigurationSection("mobs").getKeys(false)) {
             String configPath = "mobs." + mob;
 
+            // Integrity check below and setting of mob
             EntityType mobType;
             try {
                 mobType = EntityType.valueOf(cfg.getString(configPath + ".type", "none").toUpperCase());
@@ -71,6 +56,7 @@ public class EntityLoader {
                 continue;
             }
 
+            // Mob stats
             AttributeInstance defHealth = entityInstance.getAttribute(Attribute.GENERIC_MAX_HEALTH);
             AttributeInstance defDmg = entityInstance.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
             AttributeInstance defSpeed = entityInstance.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
@@ -110,15 +96,8 @@ public class EntityLoader {
         }
     }
 
-    private static void verifyIntegrity() {
-
-    }
-
-    private static void setMobsStats() {
-
-    }
-
-    private static EntityInventory loadMobInventory(@Nullable ConfigurationSection inventorySection) {
+    @Nullable
+    private EntityInventory loadMobInventory(@Nullable ConfigurationSection inventorySection) {
         EntityInventory entityInv = null;
 
         if (inventorySection != null) {
@@ -142,7 +121,7 @@ public class EntityLoader {
         return entityInv;
     }
 
-    private static HashMap<CustomMobItem , Double> loadMobDrops(@Nullable ConfigurationSection dropsSection) {
+    private HashMap<CustomMobItem , Double> loadMobDrops(@Nullable ConfigurationSection dropsSection) {
         HashMap<CustomMobItem , Double> mobdrops = new HashMap<>();
         if (dropsSection != null) {
             for (String itemName : dropsSection.getKeys(false)) {
@@ -162,7 +141,8 @@ public class EntityLoader {
         return mobdrops;
     }
 
-    private static SpawnLocation loadMobSpawnLocation(@Nullable ConfigurationSection spawnSection) {
+    @Nullable
+    private SpawnLocation loadMobSpawnLocation(@Nullable ConfigurationSection spawnSection) {
         SpawnLocation spawnLocation = null;
         if (spawnSection != null) {
             long minInterval = spawnSection.getLong("tick-interval.min", -1);

@@ -15,15 +15,16 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.EntityLoader.getLoadedWorlds;
 import static me.flaming.utils.utils.colorStr;
 import static me.flaming.utils.utils.getRandomValue;
+import static me.flaming.CustomMobsCore.getLoadedMobs;
+import static me.flaming.CustomMobsCore.getLoadedWorlds;
 
 public class EntityUtils {
     // You can also ignore the value this returns which is fine
     @NotNull
     public String spawnMob(@NotNull Location location, @NotNull String mobInternalName) {
-        CustomEntity mob = EntityLoader.getLoadedMobs().get(mobInternalName);
+        CustomEntity mob = getLoadedMobs().get(mobInternalName);
 
         if (mob == null) {
             return colorStr("&cThe specified mob does not exist in the current context");
@@ -31,11 +32,10 @@ public class EntityUtils {
 
         Entity entity = location.getWorld().spawnEntity(location, mob.getType());
         // I don't think this will ever happen as it will be handled internally anyways
-        if (!(entity instanceof LivingEntity)) {
+        if (!(entity instanceof LivingEntity living)) {
             entity.remove();
             return colorStr("&cType needs to be a living entity");
         }
-        LivingEntity living = (LivingEntity) entity;
         NamespacedKey key = new NamespacedKey(getPlugin(), "JDnD-weDJ-KDe-DSaw");
 
         // General Information about the mob

@@ -1,24 +1,24 @@
 package me.flaming;
 
+import me.flaming.classes.CustomEntity;
 import me.flaming.commands.PluginCommands;
 import me.flaming.events.EntityDeathListener;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 import static me.flaming.EntityLoader.startSpawnLogic;
 
 public class CustomMobsCore extends JavaPlugin {
     private static CustomMobsCore plugin;
-    private File dataConfigFile;
-    private FileConfiguration dataConfig;
+    private static final HashMap<String, World> Worlds = new HashMap<>();
+    private static final HashMap<String, CustomEntity> LoadedMobs = new HashMap<>();
+    private static final FileConfiguration pluginConfig = getPlugin().getConfig();
 
     @Override
     public void onEnable() {
         plugin = this;
         saveDefaultConfig();
-        createDataConfig();
         startSpawnLogic();
         getCommand("custommobs").setExecutor(new PluginCommands());
         getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);
@@ -28,35 +28,19 @@ public class CustomMobsCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Cleanup logic here
         getLogger().info("CustomMobs Disabled");
     }
-
     public static CustomMobsCore getPlugin() {
         return plugin;
     }
-
-    public File getDataFile() {
-        return dataConfigFile;
+    public static HashMap<String, World> getLoadedWorlds() {
+        return Worlds;
     }
-
-    public FileConfiguration getDataCfg() {
-        return dataConfig;
+    public static HashMap<String, CustomEntity> getLoadedMobs() {
+        return LoadedMobs;
     }
-
-    public static void saveDataCfg() {
-        try {
-            plugin.getDataCfg().save(plugin.getDataFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createDataConfig() {
-        dataConfigFile = new File(getDataFolder(), "data.yml");
-        if (!dataConfigFile.exists()) {
-            dataConfigFile.getParentFile().mkdirs();
-            saveResource("data.yml", false);
-        }
-        dataConfig = YamlConfiguration.loadConfiguration(dataConfigFile);
+    public static FileConfiguration getPluginConfig() {
+        return pluginConfig;
     }
 }

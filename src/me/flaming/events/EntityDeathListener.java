@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.Map;
 import java.util.Objects;
+import static me.flaming.CustomMobsCore.getLoadedMobs;
 import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.EntityLoader.getLoadedMobs;
 
 public class EntityDeathListener implements Listener {
     NamespacedKey key = new NamespacedKey(getPlugin(), "JDnD-weDJ-KDe-DSaw");
@@ -54,5 +54,4 @@ public class EntityDeathListener implements Listener {
 
         return item;
     }
-
 }

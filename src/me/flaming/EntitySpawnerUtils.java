@@ -11,9 +11,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Random;
-import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.EntityLoader.getLoadedMobs;
-import static me.flaming.EntityLoader.getLoadedWorlds;
+import static me.flaming.CustomMobsCore.*;
 
 public class EntitySpawnerUtils {
     public void startSpawnerLogic() {
@@ -93,6 +91,7 @@ public class EntitySpawnerUtils {
         return null;
     }
 
+    @NotNull
     public Vector getRandomVector(Vector pos1, Vector pos2) {
         double x = randomizer(pos1.getX(), pos2.getX());
         double y = randomizer(pos1.getY(), pos2.getY());
