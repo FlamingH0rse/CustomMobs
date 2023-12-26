@@ -35,8 +35,14 @@ public class EntityLoader {
         EntityUtils entityUtils = new EntityUtils();
         FileConfiguration cfg = getPluginConfig();
         getPlugin().getLogger().info("Started mob loading");
+        ConfigurationSection mobsSection = cfg.getConfigurationSection("mobs");
 
-        for (String mob : cfg.getConfigurationSection("mobs").getKeys(false)) {
+        if (mobsSection == null) {
+            getPlugin().getLogger().warning("Something is wrong with the config (Missing \"mobs:\" section). Fix the config.yml");
+            return;
+        }
+
+        for (String mob : mobsSection.getKeys(false)) {
             String configPath = "mobs." + mob;
 
             // Integrity check below and setting of mob
@@ -61,9 +67,22 @@ public class EntityLoader {
             AttributeInstance defDmg = entityInstance.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
             AttributeInstance defSpeed = entityInstance.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
 
-            double mobHealth = cfg.getDouble(configPath + ".stats.health", defHealth.getBaseValue());
-            double mobDamage = cfg.getDouble(configPath + ".stats.damage", defDmg.getBaseValue());
-            double mobSpeed = cfg.getDouble(configPath + ".stats.speed", defSpeed.getBaseValue());
+            double mobHealth = 0;
+            double mobDamage = 0;
+            double mobSpeed = 0;
+
+            // lol
+            if (defHealth != null) {
+                mobHealth = cfg.getDouble(configPath + ".stats.health", defHealth.getBaseValue());
+            }
+
+            if (defDmg != null) {
+                mobDamage = cfg.getDouble(configPath + ".stats.damage", defDmg.getBaseValue());
+            }
+
+            if (defSpeed != null) {
+                mobSpeed = cfg.getDouble(configPath + ".stats.speed", defSpeed.getBaseValue());
+            }
 
             // Load mob inventory
             ConfigurationSection inventorySection = cfg.getConfigurationSection(configPath + ".inventory");
