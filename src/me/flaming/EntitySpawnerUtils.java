@@ -11,9 +11,28 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Random;
+import static me.flaming.CustomMobsCore.getPlugin;
+import static me.flaming.EntityLoader.getLoadedMobs;
 import static me.flaming.EntityLoader.getLoadedWorlds;
 
 public class EntitySpawnerUtils {
+    public void startSpawnerLogic() {
+        for (CustomEntity mob : getLoadedMobs().values()) {
+            if (mob.getSpawnLocation().getProperty().isEnabled()) {
+                long interval1 = mob.getSpawnLocation().getProperty().getMinInterval();
+                long interval2 = mob.getSpawnLocation().getProperty().getMaxInterval();
+                long higherInterval = Math.max(interval1, interval2);
+                long lowerInterval = Math.min(interval1, interval2);
+
+                long randomInterval = randomizer(higherInterval, lowerInterval);
+
+                EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
+                // Not sure if this will block the thread and prevent the for loop from running correctly
+                mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
+            }
+        }
+    }
+
     public boolean isSafeLocation(Location location, Entity entity) {
         World world = location.getWorld();
 

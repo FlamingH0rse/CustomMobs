@@ -6,31 +6,30 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import static me.flaming.CustomMobsCore.getPlugin;
-import static me.flaming.EntityLoader.getLoadedMobs;
 
-public class EntitySpawner extends BukkitRunnable {
+public class EntitySpawnerTask extends BukkitRunnable {
+    private final CustomEntity mob;
+    public EntitySpawnerTask(@NotNull CustomEntity input) {
+        this.mob = input;
+    }
+
     @Override
     public void run() {
-        int times = 0;
-        for (CustomEntity mob : getLoadedMobs().values()) {
-            if (mob.getSpawnLocation().getProperty().isEnabled()) {
-                times++;
-                Location spawnLocation = spawnProcess(mob, 10);
-                if (spawnLocation != null) {
-                    EntityUtils entityUtils = new EntityUtils();
-                    entityUtils.spawnMob(spawnLocation, mob.getInternalName());
-                }
-            }
+        Location spawnLocation = spawnProcess(mob, 10);
+        if (spawnLocation != null) {
+            EntityUtils entityUtils = new EntityUtils();
+            entityUtils.spawnMob(spawnLocation, mob.getInternalName());
         }
-        // Atleast one mob spawn is enabled
-        if (times > 0) {
-            this.runTaskLater(getPlugin(), 20L);
-        }
+
+        // Schedule it again
+        this.runTaskLater(getPlugin(), 20L);
     }
 
     @Nullable
+    // Ignore the field maxTries is always 10 warning. It may be dynamic later and needed after some updates
     private Location spawnProcess(CustomEntity mob, int maxTries) {
         EntityUtils entityUtils = new EntityUtils();
         EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();

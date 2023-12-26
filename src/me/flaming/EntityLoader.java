@@ -29,6 +29,8 @@ public class EntityLoader {
         }
 
         loadMobs();
+        EntitySpawnerUtils entitySpawnerUtils = new EntitySpawnerUtils();
+        entitySpawnerUtils.startSpawnerLogic();
     }
 
     public static HashMap<String, World> getLoadedWorlds() {
