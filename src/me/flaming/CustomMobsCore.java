@@ -13,12 +13,13 @@ public class CustomMobsCore extends JavaPlugin {
     private static CustomMobsCore plugin;
     private static final HashMap<String, World> Worlds = new HashMap<>();
     private static final HashMap<String, CustomEntity> LoadedMobs = new HashMap<>();
-    private static final FileConfiguration pluginConfig = getPlugin().getConfig();
+    private static FileConfiguration pluginConfig;
 
     @Override
     public void onEnable() {
         plugin = this;
         saveDefaultConfig();
+        pluginConfig = getPlugin().getConfig();
         startSpawnLogic();
         getCommand("custommobs").setExecutor(new PluginCommands());
         getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);

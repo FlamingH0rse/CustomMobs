@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import me.flaming.EntityUtils;
+
+import static me.flaming.CustomMobsCore.getLoadedMobs;
 import static me.flaming.utils.utils.arrayOrDefaultValue;
 import static me.flaming.utils.utils.colorStr;
 
@@ -45,6 +47,16 @@ public class PluginCommands implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> arguments = new ArrayList<>();
+
+        if (command.getName().equalsIgnoreCase("")) {
+            if (args.length == 1) {
+                arguments.add("help");
+                arguments.add("spawnmob");
+                arguments.add("getiteminfo");
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("spawnmob")) {
+                arguments.addAll(getLoadedMobs().keySet());
+            }
+        }
         return arguments;
     }
 
@@ -127,6 +139,8 @@ public class PluginCommands implements TabExecutor {
                 .append(" - Shows this message\n").underlined(false).color(net.md_5.bungee.api.ChatColor.WHITE)
                 .append("/custommobs about").underlined(true).color(net.md_5.bungee.api.ChatColor.GOLD)
                 .append(" - View plugin's about\n").underlined(false).color(net.md_5.bungee.api.ChatColor.WHITE)
+                .append("/custommobs getiteminfo").underlined(true).color(net.md_5.bungee.api.ChatColor.GOLD)
+                .append(" - Get item info including its meta to be used on config.yml\n").underlined(false).color(net.md_5.bungee.api.ChatColor.WHITE)
                 .append("/custommobs spawnmob [Mob Internal Name]").underlined(true).color(net.md_5.bungee.api.ChatColor.GOLD)
                 .append(" - Spawns your custom mob at your current location. Good for testing\n").underlined(false).color(net.md_5.bungee.api.ChatColor.WHITE).create();
 
