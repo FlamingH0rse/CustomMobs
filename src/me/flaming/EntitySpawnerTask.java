@@ -25,7 +25,9 @@ public class EntitySpawnerTask extends BukkitRunnable {
         }
 
         // Schedule it again
-        this.runTaskLater(getPlugin(), 20L);
+        EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
+        long randomInterval = spawnerUtils.getRandomInterval(mob);
+        this.runTaskLater(getPlugin(), randomInterval);
     }
 
     @Nullable

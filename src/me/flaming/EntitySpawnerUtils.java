@@ -14,16 +14,11 @@ import java.util.Random;
 import static me.flaming.CustomMobsCore.*;
 
 public class EntitySpawnerUtils {
-    public void startSpawnerLogic() {
+    public static void startSpawnerLogic() {
+        EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
         for (CustomEntity mob : getLoadedMobs().values()) {
             if (mob.getSpawnLocation().getProperty().isEnabled()) {
-                long interval1 = mob.getSpawnLocation().getProperty().getMinInterval();
-                long interval2 = mob.getSpawnLocation().getProperty().getMaxInterval();
-                long higherInterval = Math.max(interval1, interval2);
-                long lowerInterval = Math.min(interval1, interval2);
-
-                long randomInterval = randomizer(higherInterval, lowerInterval);
-
+                long randomInterval = spawnerUtils.getRandomInterval(mob);
                 EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
                 // Not sure if this will block the thread and prevent the for loop from running correctly
                 mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
@@ -89,6 +84,15 @@ public class EntitySpawnerUtils {
         }
 
         return null;
+    }
+
+    public long getRandomInterval(@NotNull CustomEntity mob) {
+        long interval1 = mob.getSpawnLocation().getProperty().getMinInterval();
+        long interval2 = mob.getSpawnLocation().getProperty().getMaxInterval();
+        long higherInterval = Math.max(interval1, interval2);
+        long lowerInterval = Math.min(interval1, interval2);
+
+        return randomizer(higherInterval, lowerInterval);
     }
 
     @NotNull

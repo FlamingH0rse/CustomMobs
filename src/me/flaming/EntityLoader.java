@@ -24,8 +24,7 @@ public class EntityLoader {
         }
         EntityLoader entityLoader = new EntityLoader();
         entityLoader.loadMobs();
-        EntitySpawnerUtils entitySpawnerUtils = new EntitySpawnerUtils();
-        entitySpawnerUtils.startSpawnerLogic();
+        EntitySpawnerUtils.startSpawnerLogic();
     }
 
     private void loadMobs() {
