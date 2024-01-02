@@ -19,7 +19,6 @@ public class EntitySpawnerTask extends BukkitRunnable {
     @Override
     public void run() {
         int maxIteration = getRandomMobAmount(mob);
-        getPlugin().getLogger().info(String.valueOf(maxIteration));
 
         for (int i = 0; i < maxIteration; i++) {
             Location spawnLocation = spawnProcess(mob, 10);
