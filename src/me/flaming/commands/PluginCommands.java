@@ -48,9 +48,10 @@ public class PluginCommands implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> arguments = new ArrayList<>();
 
-        if (command.getName().equalsIgnoreCase("")) {
+        if (command.getName().equalsIgnoreCase("custommobs")) {
             if (args.length == 1) {
                 arguments.add("help");
+                arguments.add("about");
                 arguments.add("spawnmob");
                 arguments.add("getiteminfo");
             } else if (args.length == 2 && args[0].equalsIgnoreCase("spawnmob")) {
