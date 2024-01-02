@@ -27,14 +27,17 @@ settings:
 #    properties:                     #   General mob properties
 #      drops:                        #
 #        -                           #
-#      spawns-in:                    #
-#        enabled: false              #
-#        interval:                   #   Spawn mob in each specified tick interval for instance 1000 a mob
-#        amount-range:               #   will spawn with the given range in tick in every 1000 tick
-#          min:                      #   the min num of mobs that will spawn
+#      spawn:                        #
+#        enabled: false              #   Enable or disable it
+#        world: "world"              #   Set in which world should the mob spawn in e.g world, world_the_nether
+#        tick-interval:              #   Spawn mob in each specified tick interval range
+#          min:                      #
 #          max:                      #
-#        max: 50                     #
-#        location:                   #
+#        spawn-amount-range:         #   How many mobs should spawn using the given range
+#          min:                      #
+#          max:                      #
+#        max-mob: 50                 #   How many mobs should be spawned in (Note that spawnmob command bypasses the limit but
+#        location:                   #   mobs spawned using spawnmob command still counts in it)
 #          pos-1:                    #   Set 2 position that the mobs will spawn in. Position works similarly just like
 #            x:                      #   in worldedit
 #            y:                      #
