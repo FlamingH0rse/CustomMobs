@@ -16,14 +16,18 @@ import static me.flaming.CustomMobsCore.*;
 public class EntitySpawnerUtils {
     public static void startSpawnerLogic() {
         EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
+        int amount = 0;
         for (CustomEntity mob : getLoadedMobs().values()) {
             if (mob.getSpawnLocation().getProperty().isEnabled()) {
                 long randomInterval = spawnerUtils.getRandomInterval(mob);
                 EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
                 // Not sure if this will block the thread and prevent the for loop from running correctly
                 mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
+                amount++;
             }
         }
+
+        getPlugin().getLogger().info("Started " + amount + " spawner/s");
     }
 
     public boolean isSafeLocation(Location location, Entity entity) {
@@ -67,7 +71,7 @@ public class EntitySpawnerUtils {
     @Nullable
     public Location getPotentialSurface(Vector randomVector, CustomEntity currentMob) {
         SpawnLocation mobLocationProperty = currentMob.getSpawnLocation();
-        int height = (int) Math.round(Math.abs(mobLocationProperty.getPos1().getY() - mobLocationProperty.getPos2().getY()));
+        int height = 1 + (int) Math.round(Math.abs(mobLocationProperty.getPos1().getY() - mobLocationProperty.getPos2().getY()));
 
         for (int i = 0; i < height; i++) {
             Location surface = tryAndGetSurface(randomVector, mobLocationProperty.getWorldName(), i, false);
@@ -88,6 +92,9 @@ public class EntitySpawnerUtils {
 
     public long getRandomInterval(@NotNull CustomEntity mob) {
         long interval1 = mob.getSpawnLocation().getProperty().getMinInterval();
+        if (interval1 < 0) {
+            return 1;
+        }
         long interval2 = mob.getSpawnLocation().getProperty().getMaxInterval();
         long higherInterval = Math.max(interval1, interval2);
         long lowerInterval = Math.min(interval1, interval2);
@@ -127,11 +134,11 @@ public class EntitySpawnerUtils {
         double y = (reverse) ? randomVector.getY() - num : randomVector.getY() + num;
         World world = getLoadedWorlds().get(worldName);
 
-        Location location = new Location(world, randomVector.getX(), y, randomVector.getY());
-        // Ok I might get errors here due to references
+        Location location = new Location(world, randomVector.getX(), y, randomVector.getZ());
         Block block = location.clone().subtract(0, 1, 0).getBlock();
 
         if (location.getBlock().getType().isAir() && block.getType().isSolid()) {
+            getPlugin().getLogger().info("got a surface");
             return location;
         }
 
@@ -139,8 +146,8 @@ public class EntitySpawnerUtils {
     }
 
     private double randomizer(double pos1Component, double pos2Component) {
-        Random random = new Random();
-        return pos1Component - random.nextInt((int) (pos1Component - pos2Component));
+        double random = Math.random();
+        return pos1Component - random * (pos1Component - pos2Component);
     }
 
     private long randomizer(long a, long b) {

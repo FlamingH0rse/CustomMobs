@@ -175,18 +175,23 @@ public class EntityLoader {
             Vector pos2 = new Vector();
             String worldName = "";
 
-            if (spawnLocationSection != null && getLoadedWorlds().containsKey(spawnLocationSection.getString("world-name"))) {
-                worldName = spawnLocationSection.getString("world-name");
-                pos1.setX(spawnLocationSection.getDouble("pos1.x"));
-                pos1.setY(spawnLocationSection.getDouble("pos1.y"));
-                pos1.setZ(spawnLocationSection.getDouble("pos1.z"));
-                // Probably not needed ig
-                /*if (pos1.getX() == 0 && pos1.getY() == 0 && pos1.getZ() == 0) {
+            if (spawnLocationSection != null && getLoadedWorlds().containsKey(spawnSection.getString("world"))) {
+                worldName = spawnSection.getString("world");
+                ConfigurationSection pos1Section = spawnLocationSection.getConfigurationSection("pos-1");
+                ConfigurationSection pos2Section = spawnLocationSection.getConfigurationSection("pos-2");
 
-                }*/
-                pos2.setX(spawnLocationSection.getDouble("pos2.x"));
-                pos2.setY(spawnLocationSection.getDouble("pos2.y"));
-                pos2.setZ(spawnLocationSection.getDouble("pos2.z"));
+                if (pos1Section != null) {
+                    pos1.setX(pos1Section.getDouble("x"));
+                    pos1.setY(pos1Section.getDouble("y"));
+                    pos1.setZ(pos1Section.getDouble("z"));
+                }
+
+                if (pos2Section != null) {
+                    pos2.setX(pos2Section.getDouble("x"));
+                    pos2.setY(pos2Section.getDouble("y"));
+                    pos2.setZ(pos2Section.getDouble("z"));
+                }
+
             } else {
                 enabled = false;
                 getPlugin().getLogger().warning("No spawn location supplied. Setting enabled to false");

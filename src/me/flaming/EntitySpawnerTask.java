@@ -22,12 +22,11 @@ public class EntitySpawnerTask extends BukkitRunnable {
         if (spawnLocation != null) {
             EntityUtils entityUtils = new EntityUtils();
             entityUtils.spawnMob(spawnLocation, mob.getInternalName());
+            // Prolly add info here that says that the mob spawned or something
         }
 
         // Schedule it again
-        EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
-        long randomInterval = spawnerUtils.getRandomInterval(mob);
-        this.runTaskLater(getPlugin(), randomInterval);
+        runAgain();
     }
 
     @Nullable
@@ -50,6 +49,17 @@ public class EntitySpawnerTask extends BukkitRunnable {
                 }
             }
         }
+
+        // Fail
         return null;
+    }
+
+    private void runAgain() {
+        EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
+
+        long randomInterval = spawnerUtils.getRandomInterval(mob);
+        EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
+        mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
+        this.cancel();
     }
 }

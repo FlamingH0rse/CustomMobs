@@ -6,7 +6,7 @@ public class SpawnProperty {
     int minAmount;
     int maxAmount;
     int maxMob;
-    Boolean enabled = false;
+    Boolean enabled;
 
     public SpawnProperty(long input1, long input2, int input3, int input4, int input5, boolean input6) {
         this.minInterval = input1;

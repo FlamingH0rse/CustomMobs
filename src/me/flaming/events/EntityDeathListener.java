@@ -33,7 +33,6 @@ public class EntityDeathListener implements Listener {
                 double randomNumber = 1.0 - Math.random();
                 for (Map.Entry<CustomMobItem, Double> itemMap : mob.getValue().getMobDrops().entrySet()) {
                     if (randomNumber < itemMap.getValue()) {
-                        getPlugin().getLogger().info("worked iguess");
                         e.getDrops().add(constructItem(itemMap.getKey()));
                     }
                 }
