@@ -165,7 +165,7 @@ public class EntityLoader {
         if (spawnSection != null) {
             long minInterval = spawnSection.getLong("tick-interval.min", -1);
             long maxInterval = spawnSection.getLong("tick-interval.max", minInterval);
-            int minAmount = spawnSection.getInt("spawn-amount-range.min", -1);
+            int minAmount = spawnSection.getInt("spawn-amount-range.min", 1);
             int maxAmount = spawnSection.getInt("spawn-amount-range.max", minAmount);
             int maxMob = spawnSection.getInt("max-mob");
             boolean enabled = spawnSection.getBoolean("enabled", false);

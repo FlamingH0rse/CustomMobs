@@ -123,6 +123,11 @@ public class EntitySpawnerUtils {
         return new Vector(x, y, z);
     }
 
+    public int randomizer(int higherValue, int lowerValue) {
+        Random random = new Random();
+        return higherValue - random.nextInt((higherValue - lowerValue));
+    }
+
     @Nullable
     private Location tryAndGetSurface(Vector randomVector, String worldName, int num, boolean reverse) {
         double y = (reverse) ? randomVector.getY() - num : randomVector.getY() + num;
@@ -143,12 +148,12 @@ public class EntitySpawnerUtils {
         return pos1Component - random * (pos1Component - pos2Component);
     }
 
-    private long randomizer(long a, long b) {
+    private long randomizer(long higherValue, long lowerValue) {
         Random random = new Random();
-        return a - random.nextLong((a - b));
+        return higherValue - random.nextLong((higherValue - lowerValue));
     }
 
-    private boolean isLocationSafe(Location location) {
+    private boolean isLocationSafe(@NotNull Location location) {
         Block block = location.getBlock();
         return block.getType().isAir();
     }

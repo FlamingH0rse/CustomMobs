@@ -18,11 +18,16 @@ public class EntitySpawnerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Location spawnLocation = spawnProcess(mob, 10);
-        if (spawnLocation != null) {
-            EntityUtils entityUtils = new EntityUtils();
-            entityUtils.spawnMob(spawnLocation, mob.getInternalName());
-            // Prolly add info here that says that the mob spawned or something
+        int maxIteration = getRandomMobAmount(mob);
+        getPlugin().getLogger().info(String.valueOf(maxIteration));
+
+        for (int i = 0; i < maxIteration; i++) {
+            Location spawnLocation = spawnProcess(mob, 10);
+            if (spawnLocation != null) {
+                EntityUtils entityUtils = new EntityUtils();
+                entityUtils.spawnMob(spawnLocation, mob.getInternalName());
+                // Prolly add info here that says that the mob spawned or something
+            }
         }
 
         // Schedule it again
@@ -61,5 +66,17 @@ public class EntitySpawnerTask extends BukkitRunnable {
         EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
         mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
         this.cancel();
+    }
+
+    private int getRandomMobAmount(CustomEntity mob) {
+        int minAmount = mob.getSpawnLocation().getProperty().getMinAmount();
+        int maxAmount = mob.getSpawnLocation().getProperty().getMaxAmount();
+
+        if (minAmount > maxAmount) {
+            return 1;
+        }
+
+        EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
+        return spawnerUtils.randomizer(maxAmount, minAmount);
     }
 }
