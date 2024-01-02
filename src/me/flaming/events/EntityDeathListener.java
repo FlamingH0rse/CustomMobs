@@ -42,7 +42,7 @@ public class EntityDeathListener implements Listener {
         }
     }
 
-    public ItemStack constructItem(CustomMobItem customMobItem) {
+    private ItemStack constructItem(CustomMobItem customMobItem) {
         UnsafeValues unsafe = Bukkit.getUnsafe();
 
         Material material = customMobItem.getItem().getKey();
