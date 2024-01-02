@@ -50,6 +50,9 @@ public class EntityUtils {
         // set Entity attributes
         setEntityAttributes(mob, living);
 
+        // Make it so that entity will despawn when its unloaded
+        living.setRemoveWhenFarAway(true);
+
         // Set extra properties (may be added in config.yml) alongside with defaultAI (like zombies chasing villagers)
         if (living instanceof Ageable) {
             ((Ageable) living).setAdult();
