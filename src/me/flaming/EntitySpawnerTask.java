@@ -3,11 +3,17 @@ package me.flaming;
 import me.flaming.classes.CustomEntity;
 import me.flaming.classes.SpawnLocation;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
+import static me.flaming.CustomMobsCore.getLoadedWorlds;
 import static me.flaming.CustomMobsCore.getPlugin;
 
 public class EntitySpawnerTask extends BukkitRunnable {
@@ -21,6 +27,10 @@ public class EntitySpawnerTask extends BukkitRunnable {
         int maxIteration = getRandomMobAmount(mob);
 
         for (int i = 0; i < maxIteration; i++) {
+            if (mobAmountIsMax(mob)) {
+                break;
+            }
+
             Location spawnLocation = spawnProcess(mob, 10);
             if (spawnLocation != null) {
                 EntityUtils entityUtils = new EntityUtils();
@@ -67,7 +77,7 @@ public class EntitySpawnerTask extends BukkitRunnable {
         this.cancel();
     }
 
-    private int getRandomMobAmount(CustomEntity mob) {
+    private int getRandomMobAmount(@NotNull CustomEntity mob) {
         int minAmount = mob.getSpawnLocation().getProperty().getMinAmount();
         int maxAmount = mob.getSpawnLocation().getProperty().getMaxAmount();
 
@@ -77,5 +87,25 @@ public class EntitySpawnerTask extends BukkitRunnable {
 
         EntitySpawnerUtils spawnerUtils = new EntitySpawnerUtils();
         return spawnerUtils.randomizer(maxAmount, minAmount);
+    }
+
+    private boolean mobAmountIsMax(@NotNull CustomEntity mob) {
+        int maxAmount = mob.getSpawnLocation().getProperty().getMaxMob();
+        World currentWorld = getLoadedWorlds().get(mob.getSpawnLocation().getWorldName());
+        return entityCounter(mob, currentWorld) >= maxAmount;
+    }
+
+    private int entityCounter(@NotNull CustomEntity mob, @NotNull World currentWorld) {
+        int amount = 0;
+        NamespacedKey key = new NamespacedKey(getPlugin(), "JDnD-weDJ-KDe-DSaw");
+
+        for (LivingEntity mobInstance : currentWorld.getLivingEntities()) {
+            String mobName = mobInstance.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (Objects.equals(mobName, mob.getInternalName())) {
+                amount++;
+            }
+        }
+
+        return amount;
     }
 }
