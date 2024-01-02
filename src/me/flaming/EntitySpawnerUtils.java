@@ -21,7 +21,6 @@ public class EntitySpawnerUtils {
             if (mob.getSpawnLocation().getProperty().isEnabled()) {
                 long randomInterval = spawnerUtils.getRandomInterval(mob);
                 EntitySpawnerTask mobSpawnerTask = new EntitySpawnerTask(mob);
-                // Not sure if this will block the thread and prevent the for loop from running correctly
                 mobSpawnerTask.runTaskLater(getPlugin(), randomInterval);
                 amount++;
             }
@@ -32,11 +31,6 @@ public class EntitySpawnerUtils {
 
     public boolean isSafeLocation(Location location, Entity entity) {
         World world = location.getWorld();
-
-        // Check if the chunk is loaded (idk if this is needed)
-        /*if (!world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
-            return false;
-        }*/
 
         BoundingBox box = entity.getBoundingBox();
 
@@ -138,7 +132,6 @@ public class EntitySpawnerUtils {
         Block block = location.clone().subtract(0, 1, 0).getBlock();
 
         if (location.getBlock().getType().isAir() && block.getType().isSolid()) {
-            getPlugin().getLogger().info("got a surface");
             return location;
         }
 
