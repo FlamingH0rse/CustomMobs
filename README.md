@@ -52,4 +52,4 @@ Contributions are welcome. You can do so by forking the plugin and creating a pu
 
 ## License
 
-This plugin is licensed under the [Apache-2.0 License](LICENSE.md).
+This plugin is licensed under the [Apache-2.0 License](LICENSE).
