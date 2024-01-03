@@ -19,12 +19,17 @@ import java.util.HashMap;
 public class EntityLoader {
     public static void startSpawnLogic() {
         for (World w : getWorlds()) {
-            getPlugin().getLogger().info(w.getName());
             getLoadedWorlds().put(w.getName(), w);
         }
+
         EntityLoader entityLoader = new EntityLoader();
         entityLoader.loadMobs();
-        EntitySpawnerUtils.startSpawnerLogic();
+        ConfigurationSection settings = getPluginConfig().getConfigurationSection("settings");
+
+        if (settings != null && settings.getBoolean("enable-natural-spawning")) {
+            getPlugin().getLogger().info("enable-natural-spawning set to true. Starting mob spawner!");
+            EntitySpawnerUtils.startSpawnerLogic();
+        }
     }
 
     private void loadMobs() {

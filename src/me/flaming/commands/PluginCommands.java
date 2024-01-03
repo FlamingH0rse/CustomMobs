@@ -97,13 +97,16 @@ public class PluginCommands implements TabExecutor {
 
         BaseComponent[] metaCopyButton = new ComponentBuilder("[Copy to clipboard]").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
                 .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, itemMeta.getAsString()))
-                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Copy the meta to your Clipboard"))).create();
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Get the item meta to your Clipboard"))).create();
 
         BaseComponent[] itemCopyButton = new ComponentBuilder("[Copy to clipboard]").bold(true).color(net.md_5.bungee.api.ChatColor.GREEN)
                 .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, material.toString()))
-                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Copy the meta to your Clipboard"))).create();
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Get the item name to your Clipboard"))).create();
 
-        BaseComponent[] messageComponent = new ComponentBuilder().append(metaCopyButton).append(itemCopyButton).create();
+        BaseComponent[] messageComponent = new ComponentBuilder()
+                .append("Meta: ").append(metaCopyButton)
+                .append("\n").event((ClickEvent) null).event((HoverEvent) null)
+                .append("ItemName: ").color(net.md_5.bungee.api.ChatColor.WHITE).bold(false).append(itemCopyButton).create();
 
         p.spigot().sendMessage(messageComponent);
     }
