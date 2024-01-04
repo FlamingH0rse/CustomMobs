@@ -71,7 +71,7 @@ public class EntityUtils {
         if (randomWorld != null && mobType.getEntityClass() != null) {
             try {
                 entity = randomWorld.createEntity(location, mobType.getEntityClass());
-            } catch (Exception ignored) {
+            } catch (NoSuchMethodError ignored) {
                 // Server version does not support createEntity (Possibly due to paper 1.20.2 not supporting it)
                 // or a lower version than <1.20.2 has been used
                 // A debug message may be added here later on to inform the server owner
